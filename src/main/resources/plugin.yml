@@ -1,0 +1,4 @@
+name: CTPlayerData
+version: 1.0 #'${project.version}'
+main: me.msicraft.ctplayerdata.CTPlayerData
+api-version: '1.20'
