@@ -6,7 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerJoinAndQuitEvent implements Listener {
@@ -18,9 +20,11 @@ public class PlayerJoinAndQuitEvent implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerJoinEvent e) {
+    public void onPlayerJoin(PlayerLoginEvent e) {
         Player player = e.getPlayer();
-        plugin.getPlayerDataManager().registerPlayerData(player);
+        if (e.getResult() == PlayerLoginEvent.Result.ALLOWED) {
+            plugin.getPlayerDataManager().registerPlayerData(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
