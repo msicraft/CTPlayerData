@@ -19,15 +19,13 @@ public class PlayerJoinAndQuitEvent implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerLoginEvent e) {
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPlayerJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        if (e.getResult() == PlayerLoginEvent.Result.ALLOWED) {
-            plugin.getPlayerDataManager().registerPlayerData(player);
-        }
+        plugin.getPlayerDataManager().registerPlayerData(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
 
