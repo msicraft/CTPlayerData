@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class PlayerDataManager {
@@ -30,6 +31,10 @@ public class PlayerDataManager {
 
     public PlayerData getPlayerData(UUID uuid) {
         return registeredPlayerDataMap.getOrDefault(uuid, null);
+    }
+
+    public Set<UUID> getUUIDSets() {
+        return registeredPlayerDataMap.keySet();
     }
 
 }

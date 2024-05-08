@@ -4,11 +4,10 @@ import me.msicraft.ctplayerdata.PlayerData.DataFile.PlayerDataFile;
 import me.msicraft.ctplayerdata.PlayerData.Event.PlayerJoinAndQuitEvent;
 import me.msicraft.ctplayerdata.PlayerData.PlayerData;
 import me.msicraft.ctplayerdata.PlayerData.PlayerDataManager;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.UUID;
 
 public final class CTPlayerData extends JavaPlugin {
 
@@ -36,8 +35,8 @@ public final class CTPlayerData extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            PlayerData playerData = playerDataManager.getPlayerData(player);
+        for (UUID uuid : playerDataManager.getUUIDSets()) {
+            PlayerData playerData = playerDataManager.getPlayerData(uuid);
             playerData.savePlayerData();
         }
     }
