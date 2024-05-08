@@ -33,6 +33,8 @@ public final class CTPlayerData extends JavaPlugin {
         eventRegister();
     }
 
+
+
     @Override
     public void onDisable() {
         for (UUID uuid : playerDataManager.getUUIDSets()) {

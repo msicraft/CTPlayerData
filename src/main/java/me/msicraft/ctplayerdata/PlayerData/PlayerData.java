@@ -43,6 +43,12 @@ public class PlayerData {
             Object object = tagDataMap.get(tag);
             if (object instanceof String s) {
                 playerDataFile.getConfig().set("TagData." + tag, s);
+            } else if (object instanceof Integer i) {
+                playerDataFile.getConfig().set("TagData." + tag, i);
+            } else if (object instanceof Boolean b) {
+                playerDataFile.getConfig().set("TagData." + tag, b);
+            } else if (object instanceof Double d) {
+                playerDataFile.getConfig().set("TagData." + tag, d);
             }
         }
         playerDataFile.saveConfig();

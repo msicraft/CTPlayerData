@@ -26,6 +26,7 @@ public class PlayerJoinAndQuitEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
+
         PlayerData playerData = plugin.getPlayerDataManager().getPlayerData(player);
         playerData.savePlayerData();
 
