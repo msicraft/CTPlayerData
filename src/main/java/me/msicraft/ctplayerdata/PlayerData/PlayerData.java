@@ -25,7 +25,7 @@ public class PlayerData {
         if (section != null) {
             Set<String> sets = section.getKeys(false);
             for (String tag : sets) {
-                tagDataMap.put(tag, config.getString("TagData." + tag));
+                tagDataMap.put(tag, config.get("TagData." + tag));
             }
         }
     }
