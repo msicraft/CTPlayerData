@@ -1,8 +1,10 @@
 package me.msicraft.ctplayerdata.PlayerData;
 
+import me.msicraft.ctplayerdata.PlayerData.CustomEvent.PlayerDataLoadEvent;
 import me.msicraft.ctplayerdata.PlayerData.DataFile.PlayerDataFile;
+import me.msicraft.ctplayerdata.PlayerData.aCommon.TagData;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -14,20 +16,27 @@ public class PlayerData {
     private final Player player;
     private final PlayerDataFile playerDataFile;
 
-    private final Map<String, Object> tagDataMap = new HashMap<>(); //저장되는 데이터 [태그, 데이터] (Object 의 데이터 타입이 String(base64 data) 일경우에만 데이터 저장
+    private final Map<String, TagData> tagDataMap = new HashMap<>();
 
     public PlayerData(Player player) {
         this.player = player;
         this.playerDataFile = new PlayerDataFile(player);
 
-        FileConfiguration config = playerDataFile.getConfig();
-        ConfigurationSection section = config.getConfigurationSection("TagData");
+        Bukkit.getPluginManager().callEvent(new PlayerDataLoadEvent(player, this));
+    }
+
+    public boolean loadTagData(String pathSection) {
+        ConfigurationSection section = playerDataFile.getConfig().getConfigurationSection(pathSection);
         if (section != null) {
             Set<String> sets = section.getKeys(false);
-            for (String tag : sets) {
-                tagDataMap.put(tag, config.get("TagData." + tag));
+            for (String key : sets) {
+                String path = pathSection + "." + key;
+                Object object = playerDataFile.getConfig().get(path);
+                tagDataMap.put(key, new TagData(pathSection, object));
             }
+            return true;
         }
+        return false;
     }
 
     public Player getPlayer() {
@@ -40,15 +49,11 @@ public class PlayerData {
 
     public void savePlayerData() {
         for (String tag : tagDataMap.keySet()) {
-            Object object = tagDataMap.get(tag);
-            if (object instanceof String s) {
-                playerDataFile.getConfig().set("TagData." + tag, s);
-            } else if (object instanceof Integer i) {
-                playerDataFile.getConfig().set("TagData." + tag, i);
-            } else if (object instanceof Boolean b) {
-                playerDataFile.getConfig().set("TagData." + tag, b);
-            } else if (object instanceof Double d) {
-                playerDataFile.getConfig().set("TagData." + tag, d);
+            TagData tagData = tagDataMap.get(tag);
+            String path = tagData.getSectionPath();
+            if (path != null) {
+                Object object = tagData.getValue();
+                playerDataFile.getConfig().set(path, object);
             }
         }
         playerDataFile.saveConfig();
@@ -58,12 +63,12 @@ public class PlayerData {
         return tagDataMap.containsKey(tag);
     }
 
-    public Object getTagData(String tag, Object defaultValue) {
-        return tagDataMap.getOrDefault(tag, defaultValue);
+    public TagData getTagData(String tag) {
+        return tagDataMap.getOrDefault(tag, null);
     }
 
-    public void setTagData(String tag, Object data) {
-        tagDataMap.put(tag, data);
+    public void setTagData(String tag, TagData tagData) {
+        tagDataMap.put(tag, tagData);
     }
 
     public void removeTagData(String tag) {
