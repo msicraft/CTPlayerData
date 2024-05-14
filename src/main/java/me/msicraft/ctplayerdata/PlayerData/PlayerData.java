@@ -25,14 +25,14 @@ public class PlayerData {
         Bukkit.getPluginManager().callEvent(new PlayerDataLoadEvent(player, this));
     }
 
-    public boolean loadTagData(String pathSection) {
-        ConfigurationSection section = playerDataFile.getConfig().getConfigurationSection(pathSection);
+    public boolean loadTagData(String sectionPath) {
+        ConfigurationSection section = playerDataFile.getConfig().getConfigurationSection(sectionPath);
         if (section != null) {
             Set<String> sets = section.getKeys(false);
             for (String key : sets) {
-                String path = pathSection + "." + key;
+                String path = sectionPath + "." + key;
                 Object object = playerDataFile.getConfig().get(path);
-                tagDataMap.put(key, new TagData(pathSection, object));
+                tagDataMap.put(key, new TagData(sectionPath, object));
             }
             return true;
         }
