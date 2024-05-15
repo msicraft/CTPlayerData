@@ -53,7 +53,7 @@ public class PlayerData {
             String path = tagData.getSectionPath();
             if (path != null) {
                 Object object = tagData.getValue();
-                playerDataFile.getConfig().set(path, object);
+                playerDataFile.getConfig().set(path + "." + tag, object);
             }
         }
         playerDataFile.saveConfig();
