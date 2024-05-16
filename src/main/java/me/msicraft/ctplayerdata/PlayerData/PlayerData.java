@@ -21,8 +21,6 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.player = player;
         this.playerDataFile = new PlayerDataFile(player);
-
-        Bukkit.getPluginManager().callEvent(new PlayerDataLoadEvent(player, this));
     }
 
     public boolean loadTagData(String sectionPath) {

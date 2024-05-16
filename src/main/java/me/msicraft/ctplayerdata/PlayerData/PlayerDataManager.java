@@ -1,6 +1,8 @@
 package me.msicraft.ctplayerdata.PlayerData;
 
 import me.msicraft.ctplayerdata.CTPlayerData;
+import me.msicraft.ctplayerdata.PlayerData.CustomEvent.PlayerDataLoadEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -18,7 +20,10 @@ public class PlayerDataManager {
     }
 
     public void registerPlayerData(Player player) {
-        registeredPlayerDataMap.put(player.getUniqueId(), new PlayerData(player));
+        PlayerData playerData = new PlayerData(player);
+        registeredPlayerDataMap.put(player.getUniqueId(), playerData);
+
+        Bukkit.getPluginManager().callEvent(new PlayerDataLoadEvent(player, playerData));
     }
 
     public void unregisterPlayerData(Player player) {
